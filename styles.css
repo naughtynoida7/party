@@ -1,0 +1,130 @@
+/* ---------- Party plane · clean festive sky, GRooLza-style layout ---------- */
+:root {
+  --pink:   #ff3ea5;
+  --yellow: #ffd23f;
+  --teal:   #21d4c4;
+  --violet: #8a5cff;
+  --ink:    #34204a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* keep horizontal overflow on <html> so <body> stays the page's scroll source
+   (overflow-x:hidden on body would make body a scroll container and break ScrollTrigger) */
+html { overflow-x: hidden; }
+
+body {
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+  /* calm, airy festive sky — soft and uncluttered */
+  background: linear-gradient(180deg, #bfeaff 0%, #d9ecff 38%, #ffe7f3 78%, #fff6e6 100%);
+}
+
+/* three.js canvas + flight-path SVG: fixed, full-screen, layered behind copy */
+#scene, #flightpath {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+#scene { z-index: 2; }
+#flightpath {
+  z-index: 1;
+  filter: drop-shadow(0 2px 5px rgba(255, 62, 165, .22));
+}
+
+/* ---- intro title ---- */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+.kicker {
+  font-size: clamp(.8rem, 1.6vw, 1rem);
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--pink);
+  padding-left: .42em;
+}
+h1 {
+  font-size: clamp(3.5rem, 15vw, 12rem);
+  line-height: .9;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  background: linear-gradient(100deg, var(--pink), var(--violet) 45%, var(--teal) 80%, var(--yellow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 6px 0 rgba(255,255,255,.4);
+}
+.sub {
+  font-size: clamp(1.05rem, 2.3vw, 1.7rem);
+  font-weight: 700;
+  color: #5a2d6e;
+  margin-top: .3rem;
+}
+
+/* ---- counter-scrolling copy overlay ---- */
+#copy {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(86vw, 18ch);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: clamp(2rem, 6.5vw, 5rem);
+  line-height: 1.02;
+  font-weight: 800;
+  color: var(--ink);
+  text-shadow: 0 3px 0 rgba(255,255,255,.6);
+  opacity: 0;            /* JS drives opacity + horizontal counter-scroll */
+  will-change: transform, opacity;
+}
+.line--finale {
+  background: linear-gradient(100deg, var(--pink), var(--violet) 55%, var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- loader chip ---- */
+#loader {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 6;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(255,255,255,.7);
+  padding: .5rem 1rem;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  transition: opacity .5s ease;
+}
+#loader.hidden { opacity: 0; }
+
+/* ---- scroll spine ---- */
+#spacer { height: 600vh; }
+
+/* reduced motion: show first headline statically, no scrubbing surprises */
+@media (prefers-reduced-motion: reduce) {
+  #intro { opacity: 1; }
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Party · scroll to take off 🎉</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+</head>
+<body>
+  <!-- three.js plane (rides on the flight path) -->
+  <canvas id="scene"></canvas>
+
+  <!-- the dotted flight path + the colourful trail that draws in behind -->
+  <svg id="flightpath" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="trail-grad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"  stop-color="#ff3ea5" />
+        <stop offset="50%" stop-color="#ffd23f" />
+        <stop offset="100%" stop-color="#21d4c4" />
+      </linearGradient>
+    </defs>
+    <!-- faint dotted route (the planned flight) -->
+    <path id="route"
+      d="M -60 640 C 180 700 280 470 470 510 C 660 550 690 350 470 320 C 250 290 250 560 470 600 C 690 640 840 470 1080 430"
+      fill="none" stroke="#7a4a86" stroke-opacity="0.28"
+      stroke-width="4" stroke-linecap="round" stroke-dasharray="2 16" />
+    <!-- colourful trail, revealed on scroll -->
+    <path id="trail"
+      d="M -60 640 C 180 700 280 470 470 510 C 660 550 690 350 470 320 C 250 290 250 560 470 600 C 690 640 840 470 1080 430"
+      fill="none" stroke="url(#trail-grad)" stroke-width="7"
+      stroke-linecap="round" />
+  </svg>
+
+  <!-- counter-scrolling copy (fixed overlay, driven by JS) -->
+  <div id="copy" aria-hidden="false">
+    <h2 class="line" data-at="0.06">The party has lift-off.</h2>
+    <h2 class="line" data-at="0.30">No runway required.</h2>
+    <h2 class="line" data-at="0.52">Altitude: maximum&nbsp;fun.</h2>
+    <h2 class="line" data-at="0.74">Confetti weather ahead.</h2>
+    <h2 class="line line--finale" data-at="0.95">Welcome to cruising altitude&nbsp;🎉</h2>
+  </div>
+
+  <!-- intro title (fades out as you start scrolling) -->
+  <header id="intro">
+    <p class="kicker">now boarding</p>
+    <h1>THE&nbsp;PARTY</h1>
+    <p class="sub">Scroll to take off&nbsp;🎉</p>
+  </header>
+
+  <!-- scroll spine: gives ScrollTrigger room to scrub -->
+  <div id="spacer"></div>
+
+  <div id="loader" aria-live="polite">warming up the engines&hellip;</div>
+
+  <script type="module" src="src/scroll.js"></script>
+</body>
+</html>
