@@ -34,11 +34,23 @@ body {
   filter: drop-shadow(0 2px 5px rgba(255, 62, 165, .22));
 }
 
+/* ---- frosted backdrop behind the intro (JS fades opacity with the title) ---- */
+#introblur {
+  position: fixed;
+  inset: 0;
+  z-index: 3;                 /* above scene(2)/path(1), below the text(4) */
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+  will-change: opacity;
+}
+
 /* ---- intro title ---- */
 #intro {
   position: fixed;
   inset: 0;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,7 +88,7 @@ h1 {
 #copy {
   position: fixed;
   inset: 0;
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
 }
 .line {

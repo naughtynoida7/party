@@ -12,6 +12,7 @@ if (hasDrawSVG) gsap.registerPlugin(window.DrawSVGPlugin);
 
 const trail = document.getElementById("trail");
 const intro = document.getElementById("intro");
+const introBlur = document.getElementById("introblur");
 const loader = document.getElementById("loader");
 const lines = gsap.utils.toArray(".line").map((el) => ({
   el, at: parseFloat(el.dataset.at),
@@ -24,14 +25,21 @@ let burst = false;
 function render(p) {
   app.setProgress(p);
 
-  // intro fades out over the first slice of scroll
-  intro.style.opacity = String(Math.max(0, 1 - p / 0.06));
+  // intro title + its frosted backdrop fade out together over the first slice
+  // of scroll — the blur stays while "HOUSE PARTY" is up, then clears with it
+  const introOp = Math.max(0, 1 - p / 0.06);
+  intro.style.opacity = String(introOp);
+  introBlur.style.opacity = String(introOp);
+
+  // headlines are gated behind the intro so nothing overlaps "HOUSE PARTY"
+  // (fully hidden while the title is up, allowed in only as it fades out)
+  const gate = 1 - introOp;
 
   // counter-scroll headlines: text slides left as the plane flies right
   for (const { el, at } of lines) {
     const d = p - at;                         // signed distance from this line's moment
     const k = Math.abs(d) / WIN;              // 0 at centre → 1 at edge
-    const op = k >= 1 ? 0 : Math.cos(k * Math.PI / 2); // smooth in/out
+    const op = (k >= 1 ? 0 : Math.cos(k * Math.PI / 2)) * gate; // smooth in/out
     el.style.opacity = op.toFixed(3);
     if (op > 0) el.style.transform = `translate(calc(-50% - ${d * 1500}px), -50%)`;
   }

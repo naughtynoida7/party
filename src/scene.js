@@ -147,7 +147,6 @@ function tick() {
   const t = clock.elapsedTime;
 
   smooth += (app.progress - smooth) * Math.min(1, dt * 8);
-  if (window.__frozen != null) smooth = window.__frozen; // debug freeze
   placePlane(app.reducedMotion ? app.progress : smooth);
 
   plane.userData.prop.rotation.x += dt * 20;
@@ -169,7 +168,7 @@ function tick() {
   cGeo.attributes.position.needsUpdate = true;
 
   renderer.render(scene, camera);
-  if (!window.__paused) requestAnimationFrame(tick); // debug: pause makes page idle
+  requestAnimationFrame(tick);
 }
 
 function onResize() {
@@ -183,41 +182,5 @@ window.addEventListener("resize", onResize);
 placePlane(0);
 requestAnimationFrame(tick);
 app.ready = true;
-
-// dev hook: lets the preview verify the plane is on the path / project to screen
-window.__debug = {
-  app, plane, camera,
-  planeScreen() {
-    const v = plane.position.clone().project(camera);
-    return { sx: (v.x * 0.5 + 0.5) * innerWidth, sy: (-v.y * 0.5 + 0.5) * innerHeight };
-  },
-  routeScreen(f) {
-    const len = Math.min(1, Math.max(0, f)) * routeLen;
-    const p = routePath.getPointAtLength(len);
-    return { sx: (p.x / 1000) * innerWidth, sy: (p.y / 1000) * innerHeight };
-  },
-  // place plane at f synchronously and compare its screen pos to the route
-  test(f) {
-    placePlane(f);
-    const v = plane.position.clone().project(camera);
-    const ps = { sx: (v.x * 0.5 + 0.5) * innerWidth, sy: (-v.y * 0.5 + 0.5) * innerHeight };
-    const rs = this.routeScreen(f);
-    return { f, planeXY: [Math.round(ps.sx), Math.round(ps.sy)],
-             routeXY: [Math.round(rs.sx), Math.round(rs.sy)],
-             dx: Math.round(ps.sx - rs.sx), dy: Math.round(ps.sy - rs.sy) };
-  },
-  // freeze the scene at progress f and render one idle frame (for screenshots)
-  snap(f) {
-    window.__frozen = f;
-    app.setProgress(f);
-    placePlane(f);
-    renderer.render(scene, camera);
-    window.__paused = true;     // stop scheduling new frames → page goes idle
-  },
-  resume() {
-    window.__paused = false; window.__frozen = null;
-    requestAnimationFrame(tick);
-  },
-};
 
 export { scene, camera };

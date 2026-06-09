@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Party · scroll to take off 🎉</title>
+  <title>House Party🎉</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="styles.css" />
 
@@ -28,31 +28,35 @@
         <stop offset="100%" stop-color="#21d4c4" />
       </linearGradient>
     </defs>
-    <!-- faint dotted route (the planned flight) -->
+    <!-- faint dotted route (the planned flight) — x is monotonic so the plane
+         always flies forward, with gentle vertical S-waves like the original -->
     <path id="route"
-      d="M -60 640 C 180 700 280 470 470 510 C 660 550 690 350 470 320 C 250 290 250 560 470 600 C 690 640 840 470 1080 430"
+      d="M -80 560 C 130 690 250 320 440 400 C 620 470 690 720 880 560 C 1000 470 1050 420 1130 470"
       fill="none" stroke="#7a4a86" stroke-opacity="0.28"
       stroke-width="4" stroke-linecap="round" stroke-dasharray="2 16" />
-    <!-- colourful trail, revealed on scroll -->
+    <!-- colourful trail, revealed on scroll (identical path) -->
     <path id="trail"
-      d="M -60 640 C 180 700 280 470 470 510 C 660 550 690 350 470 320 C 250 290 250 560 470 600 C 690 640 840 470 1080 430"
+      d="M -80 560 C 130 690 250 320 440 400 C 620 470 690 720 880 560 C 1000 470 1050 420 1130 470"
       fill="none" stroke="url(#trail-grad)" stroke-width="7"
       stroke-linecap="round" />
   </svg>
 
   <!-- counter-scrolling copy (fixed overlay, driven by JS) -->
   <div id="copy" aria-hidden="false">
-    <h2 class="line" data-at="0.06">The party has lift-off.</h2>
-    <h2 class="line" data-at="0.30">No runway required.</h2>
-    <h2 class="line" data-at="0.52">Altitude: maximum&nbsp;fun.</h2>
-    <h2 class="line" data-at="0.74">Confetti weather ahead.</h2>
-    <h2 class="line line--finale" data-at="0.95">Welcome to cruising altitude&nbsp;🎉</h2>
+    <h2 class="line" data-at="0.06">You are invited!</h2>
+    <h2 class="line" data-at="0.30">Venue - Beloved Flat</h2>
+    <h2 class="line" data-at="0.52">Date - 26th June (Friday)</h2>
+    <h2 class="line" data-at="0.74">Peanuts, Booze & Bakchodi</h2>
+    <h2 class="line line--finale" data-at="0.95">Farewell🎉</h2>
   </div>
+
+  <!-- frosted backdrop behind the intro title; clears as the title fades -->
+  <div id="introblur" aria-hidden="true"></div>
 
   <!-- intro title (fades out as you start scrolling) -->
   <header id="intro">
     <p class="kicker">now boarding</p>
-    <h1>THE&nbsp;PARTY</h1>
+    <h1>HOUSE&nbsp;PARTY</h1>
     <p class="sub">Scroll to take off&nbsp;🎉</p>
   </header>
 
