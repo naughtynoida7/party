@@ -35,13 +35,15 @@ function render(p) {
   // (fully hidden while the title is up, allowed in only as it fades out)
   const gate = 1 - introOp;
 
-  // counter-scroll headlines: text slides left as the plane flies right
+  // counter-scroll headlines: text slides left as the plane flies right.
+  // slide distance scales with viewport width so it never flies off small screens
+  const slide = window.innerWidth * 0.9;
   for (const { el, at } of lines) {
     const d = p - at;                         // signed distance from this line's moment
     const k = Math.abs(d) / WIN;              // 0 at centre → 1 at edge
     const op = (k >= 1 ? 0 : Math.cos(k * Math.PI / 2)) * gate; // smooth in/out
     el.style.opacity = op.toFixed(3);
-    if (op > 0) el.style.transform = `translate(calc(-50% - ${d * 1500}px), -50%)`;
+    if (op > 0) el.style.transform = `translate(calc(-50% - ${d * slide}px), -50%)`;
   }
 
   // finale confetti burst once near the end

@@ -20,12 +20,14 @@ body {
   background: linear-gradient(180deg, #bfeaff 0%, #d9ecff 38%, #ffe7f3 78%, #fff6e6 100%);
 }
 
-/* three.js canvas + flight-path SVG: fixed, full-screen, layered behind copy */
+/* three.js canvas + flight-path SVG: fixed, full-screen, layered behind copy.
+   dvh keeps it correct as mobile browser chrome shows/hides */
 #scene, #flightpath {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   pointer-events: none;
 }
 #scene { z-index: 2; }
@@ -56,6 +58,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 0 5vw;            /* breathing room so the title never touches edges */
   pointer-events: none;
 }
 .kicker {
@@ -67,10 +70,12 @@ body {
   padding-left: .42em;
 }
 h1 {
-  font-size: clamp(3.5rem, 15vw, 12rem);
+  font-size: clamp(3rem, 12vw, 8.5rem); /* fits "HOUSE PARTY" on one line on wide screens */
   line-height: .9;
   font-weight: 900;
   letter-spacing: -.02em;
+  max-width: 100%;
+  overflow-wrap: break-word;  /* wrap to two lines only when too narrow (phones) */
   background: linear-gradient(100deg, var(--pink), var(--violet) 45%, var(--teal) 80%, var(--yellow));
   -webkit-background-clip: text;
   background-clip: text;
@@ -135,6 +140,14 @@ h1 {
 
 /* ---- scroll spine ---- */
 #spacer { height: 600vh; }
+
+/* ---- small screens (phones): tighter spacing, looser line-height ---- */
+@media (max-width: 600px) {
+  .kicker { letter-spacing: .3em; }
+  h1 { line-height: .95; }
+  .line { width: min(90vw, 16ch); line-height: 1.08; }
+  #loader { font-size: .72rem; bottom: 14px; }
+}
 
 /* reduced motion: show first headline statically, no scrubbing surprises */
 @media (prefers-reduced-motion: reduce) {

@@ -38,8 +38,15 @@ scene.add(rim);
 
 // the plane
 const plane = buildPlane();
-plane.scale.setScalar(0.92);
 scene.add(plane);
+
+// keep the plane a sensible on-screen size across phone / tablet / desktop:
+// narrow + portrait viewports see a wider plane, so scale it down with aspect
+function fitPlane() {
+  const aspect = window.innerWidth / window.innerHeight;
+  plane.scale.setScalar(THREE.MathUtils.clamp(0.55 + 0.25 * aspect, 0.5, 1.0));
+}
+fitPlane();
 
 // ---- screen-path → world placement ----
 const routePath = document.getElementById("route");
@@ -176,6 +183,7 @@ function onResize() {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   routeLen = routePath.getTotalLength();
+  fitPlane();
 }
 window.addEventListener("resize", onResize);
 
